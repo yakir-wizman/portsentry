@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Banner
 echo "############################################"
 echo "#                                          #"
 echo "#           Welcome to PortSentry          #"
