@@ -9,14 +9,18 @@ echo "#                                          #"
 echo "############################################"
 
 # Check if enough arguments are passed
-if [ "$#" -ne 2 ]; then
-    echo "Usage: ./PortSentry.sh <target_file_or_ip> <ports>"
+if [ "$#" -lt 2 ]; then
+    echo "Usage: ./PortSentry.sh <target_file_or_ip> <ports> [nmap_arguments]"
     exit 1
 fi
 
 # Define variables
 TARGET=$1
 PORTS=$2
+shift 2  # Remove the first two arguments
+
+# Remaining arguments are for Nmap
+NMAP_ARGS="$@"
 
 # Check if the target is a file or single IP
 if [ -f $TARGET ]; then
@@ -39,7 +43,7 @@ PARSED_PORTS=$(cat parsed_ports.txt)
 # Run Nmap scan with user-provided arguments except targets and ports
 if [ ! -z "$PARSED_PORTS" ]; then
     echo "Running Nmap scan..."
-    nmap -p $PARSED_PORTS $NMAP_TARGETS
+    nmap -p $PARSED_PORTS $NMAP_ARGS $NMAP_TARGETS
 else
     echo "No open ports found. Skipping Nmap scan."
 fi
